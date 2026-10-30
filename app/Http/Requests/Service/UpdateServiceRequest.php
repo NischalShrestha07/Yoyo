@@ -22,7 +22,7 @@ class UpdateServiceRequest extends FormRequest
             'code' => ['required', 'string', 'max:255', Rule::unique('services')->where(function ($query) use ($business) {
                 return $query->where('business_id', $business->id)->whereNull('deleted_at');
             })->ignore($service->id)],
-            'category_id' => ['nullable', 'exists:categories,id'],
+            'category_id' => ['nullable', Rule::exists('categories', 'id')->where('business_id', $business->id)],
             'description' => ['nullable', 'string'],
             'selling_price' => ['required', 'numeric', 'min:0'],
             'is_active' => ['boolean'],

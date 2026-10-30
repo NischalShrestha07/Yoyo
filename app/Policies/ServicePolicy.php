@@ -2,48 +2,46 @@
 
 namespace App\Policies;
 
+use App\Models\Business;
 use App\Models\Service;
 use App\Models\User;
-use App\Models\Business;
+use App\Policies\Concerns\AuthorizesBusinessMembers;
 
 class ServicePolicy
 {
-    public function viewAny(User $user, Business $business): bool
+    use AuthorizesBusinessMembers;
+
+    public function viewAny(User $user, ?Business $business = null): bool
     {
-        return $user->is_active && $business->users()->where('user_id', $user->id)->exists();
+        return $business instanceof Business
+            ? $this->isMember($user, $business)
+            : $user->is_active;
     }
 
-    public function view(User $user, Business $business, Service $service): bool
+    public function view(User $user, Service $service, ?Business $business = null): bool
     {
-        return $user->is_active && 
-               $business->users()->where('user_id', $user->id)->exists() &&
-               $service->business_id === $business->id;
+        return $this->ownsModel($user, $service, $business);
     }
 
-    public function create(User $user, Business $business): bool
+    public function create(User $user, ?Business $business = null): bool
     {
-        return $user->is_active && 
-               $business->users()->where('user_id', $user->id)->exists();
+        return $business instanceof Business
+            ? $this->isMember($user, $business)
+            : $user->is_active;
     }
 
-    public function update(User $user, Business $business, Service $service): bool
+    public function update(User $user, Service $service, ?Business $business = null): bool
     {
-        return $user->is_active && 
-               $business->users()->where('user_id', $user->id)->exists() &&
-               $service->business_id === $business->id;
+        return $this->ownsModel($user, $service, $business);
     }
 
-    public function archive(User $user, Business $business, Service $service): bool
+    public function archive(User $user, Service $service, ?Business $business = null): bool
     {
-        return $user->is_active && 
-               $business->users()->where('user_id', $user->id)->exists() &&
-               $service->business_id === $business->id;
+        return $this->ownsModel($user, $service, $business);
     }
 
-    public function delete(User $user, Business $business, Service $service): bool
+    public function delete(User $user, Service $service, ?Business $business = null): bool
     {
-        return $user->is_active && 
-               $business->users()->where('user_id', $user->id)->exists() &&
-               $service->business_id === $business->id;
+        return $this->ownsModel($user, $service, $business);
     }
 }

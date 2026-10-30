@@ -14,11 +14,21 @@ class StockBalance extends Model
         'business_id',
         'product_id',
         'product_variant_id',
+        'variant_key',
         'stock_location_id',
         'quantity',
         'average_cost',
         'reserved_quantity',
     ];
+
+    protected static function booted(): void
+    {
+        static::saving(function (StockBalance $balance) {
+            $balance->variant_key = $balance->product_variant_id !== null
+                ? (string) $balance->product_variant_id
+                : '';
+        });
+    }
 
     protected function casts(): array
     {

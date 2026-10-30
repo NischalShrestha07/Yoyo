@@ -74,6 +74,40 @@ class Business extends Model
         return $this->hasMany(AuditLog::class);
     }
 
+    /**
+     * Read a typed business setting without exposing the raw string.
+     */
+    public function getSetting(string $key, mixed $default = null): mixed
+    {
+        $setting = $this->settings()->where('key', $key)->first();
+
+        if (! $setting) {
+            return $default;
+        }
+
+        return match ($setting->type) {
+            'bool', 'boolean' => filter_var($setting->value, FILTER_VALIDATE_BOOLEAN),
+            'int', 'integer' => (int) $setting->value,
+            'float', 'decimal' => (float) $setting->value,
+            'json', 'array' => json_decode((string) $setting->value, true) ?? $default,
+            default => $setting->value,
+        };
+    }
+
+    public function setSetting(string $key, mixed $value, string $type = 'string'): BusinessSetting
+    {
+        $stored = match ($type) {
+            'bool', 'boolean' => $value ? '1' : '0',
+            'json', 'array' => json_encode($value),
+            default => (string) $value,
+        };
+
+        return BusinessSetting::updateOrCreate(
+            ['business_id' => $this->id, 'key' => $key],
+            ['value' => $stored, 'type' => $type]
+        );
+    }
+
     public function categories()
     {
         return $this->hasMany(Category::class);

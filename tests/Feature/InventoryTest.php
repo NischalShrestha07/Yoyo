@@ -127,6 +127,8 @@ class InventoryTest extends TestCase
 
     public function test_stock_transfer_between_locations(): void
     {
+        $this->business->setSetting('inventory.multiple_locations', true, 'bool');
+
         $this->inventoryService->stockReceipt($this->business, $this->product, 100, $this->location, $this->admin);
         
         $toLocation = StockLocation::factory()->create([

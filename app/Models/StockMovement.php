@@ -29,6 +29,17 @@ class StockMovement extends Model
         'occurred_at',
     ];
 
+    protected static function booted(): void
+    {
+        static::updating(function () {
+            throw new \RuntimeException('Stock movements are immutable; create a reversal movement instead.');
+        });
+
+        static::deleting(function () {
+            throw new \RuntimeException('Stock movements cannot be deleted; create a reversal movement instead.');
+        });
+    }
+
     protected function casts(): array
     {
         return [

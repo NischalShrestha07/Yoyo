@@ -2,39 +2,45 @@
 
 namespace App\Policies;
 
+use App\Models\Business;
 use App\Models\StockMovement;
 use App\Models\User;
-use App\Models\Business;
+use App\Policies\Concerns\AuthorizesBusinessMembers;
 
 class StockMovementPolicy
 {
-    public function viewAny(User $user, Business $business): bool
+    use AuthorizesBusinessMembers;
+
+    public function viewAny(User $user, ?Business $business = null): bool
     {
-        return $user->is_active && $business->users()->where('user_id', $user->id)->exists();
+        return $business instanceof Business
+            ? $this->isMember($user, $business)
+            : $user->is_active;
     }
 
-    public function view(User $user, Business $business, StockMovement $stockMovement): bool
+    public function view(User $user, StockMovement $stockMovement, ?Business $business = null): bool
     {
-        return $user->is_active && 
-               $business->users()->where('user_id', $user->id)->exists() &&
-               $stockMovement->business_id === $business->id;
+        return $this->ownsModel($user, $stockMovement, $business);
     }
 
-    public function create(User $user, Business $business): bool
+    public function create(User $user, ?Business $business = null): bool
     {
-        return $user->is_active && 
-               $business->users()->where('user_id', $user->id)->exists();
+        return $business instanceof Business
+            ? $this->isMember($user, $business)
+            : $user->is_active;
     }
 
-    public function adjust(User $user, Business $business): bool
+    public function adjust(User $user, ?Business $business = null): bool
     {
-        return $user->is_active && 
-               $business->users()->where('user_id', $user->id)->exists();
+        return $business instanceof Business
+            ? $this->isMember($user, $business)
+            : $user->is_active;
     }
 
-    public function transfer(User $user, Business $business): bool
+    public function transfer(User $user, ?Business $business = null): bool
     {
-        return $user->is_active && 
-               $business->users()->where('user_id', $user->id)->exists();
+        return $business instanceof Business
+            ? $this->isMember($user, $business)
+            : $user->is_active;
     }
 }

@@ -15,10 +15,14 @@ class StoreCategoryRequest extends FormRequest
     public function rules(): array
     {
         $business = $this->route('business');
+
         return [
             'name' => ['required', 'string', 'max:255'],
-            'slug' => ['required', 'string', 'max:255'],
-            'parent_id' => ['nullable', 'exists:categories,id'],
+            'slug' => ['nullable', 'string', 'max:255'],
+            'parent_id' => [
+                'nullable',
+                Rule::exists('categories', 'id')->where('business_id', $business->id),
+            ],
             'description' => ['nullable', 'string'],
             'image_path' => ['nullable', 'string'],
             'is_active' => ['boolean'],

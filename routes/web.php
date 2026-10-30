@@ -11,7 +11,9 @@ use App\Http\Controllers\Platform\MembershipController;
 use App\Http\Controllers\Platform\ModuleController;
 use App\Http\Controllers\Platform\SettingController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductVariantController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\UnitOfMeasurementController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\StockLocationController;
 use Illuminate\Support\Facades\Route;
@@ -36,6 +38,7 @@ Route::middleware(['auth', 'active'])->group(function () {
         // Products
         Route::resource('products', ProductController::class);
         Route::post('products/{product}/archive', [ProductController::class, 'archive'])->name('products.archive');
+        Route::resource('products.variants', ProductVariantController::class)->except(['show']);
         
         // Services
         Route::resource('services', ServiceController::class);
@@ -44,6 +47,9 @@ Route::middleware(['auth', 'active'])->group(function () {
         // Categories
         Route::resource('categories', CategoryController::class);
         
+        // Units of measurement
+        Route::resource('units', UnitOfMeasurementController::class);
+
         // Stock Locations
         Route::resource('stock-locations', StockLocationController::class);
         
@@ -55,7 +61,14 @@ Route::middleware(['auth', 'active'])->group(function () {
         Route::post('inventory/adjustment', [StockController::class, 'adjustment'])->name('inventory.adjustment');
         Route::get('inventory/transfer', [StockController::class, 'transferForm'])->name('inventory.transfer.form');
         Route::post('inventory/transfer', [StockController::class, 'transfer'])->name('inventory.transfer');
+        Route::get('inventory/return', [StockController::class, 'returnForm'])->name('inventory.return.form');
+        Route::post('inventory/return', [StockController::class, 'returnStock'])->name('inventory.return');
         Route::get('inventory/movements', [StockController::class, 'movements'])->name('inventory.movements');
+        Route::post('inventory/movements/{movement}/reverse', [StockController::class, 'reverse'])->name('inventory.movements.reverse');
+        Route::post('inventory/reservations', [StockController::class, 'reserve'])->name('inventory.reservations.store');
+        Route::delete('inventory/reservations/{reservation}', [StockController::class, 'releaseReservation'])->name('inventory.reservations.destroy');
+        Route::get('inventory/settings', [StockController::class, 'settingsForm'])->name('inventory.settings');
+        Route::post('inventory/settings', [StockController::class, 'settingsUpdate'])->name('inventory.settings.update');
     });
 });
 

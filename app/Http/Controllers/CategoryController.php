@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Business;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class CategoryController extends Controller
@@ -18,11 +19,13 @@ class CategoryController extends Controller
 
         $categories = Category::where('business_id', $business->id)
             ->with('parent')
+            ->withCount(['products', 'services'])
             ->when($request->search, function ($query, $search) {
                 $query->where('name', 'like', "%{$search}%");
             })
             ->latest()
-            ->paginate(15);
+            ->paginate(15)
+            ->withQueryString();
 
         return view('business.categories.index', compact('business', 'categories'));
     }
@@ -70,7 +73,7 @@ class CategoryController extends Controller
 
     public function edit(Business $business, Category $category): View
     {
-        $this->authorize('update', [$business, $category]);
+        $this->authorize('update', [$category, $business]);
 
         $parents = Category::where('business_id', $business->id)
             ->where('is_active', true)
@@ -82,7 +85,9 @@ class CategoryController extends Controller
 
     public function update(UpdateCategoryRequest $request, Business $business, Category $category): RedirectResponse
     {
-        $this->authorize('update', [$business, $category]);
+        $this->authorize('update', [$category, $business]);
+
+        $this->assertParentIsNotDescendant($category, $request->parent_id);
 
         $category->update([
             'parent_id' => $request->parent_id,
@@ -90,7 +95,7 @@ class CategoryController extends Controller
             'slug' => \Str::slug($request->name),
             'description' => $request->description,
             'image_path' => $request->image_path,
-            'is_active' => $request->boolean('is_active', true),
+            'is_active' => $request->has('is_active') ? $request->boolean('is_active') : $category->is_active,
             'sort_order' => $request->sort_order ?? 0,
         ]);
 
@@ -98,13 +103,39 @@ class CategoryController extends Controller
             ->with('success', 'Category updated successfully.');
     }
 
+    /**
+     * Prevent moving a category underneath one of its own descendants, which
+     * would detach the branch from the tree.
+     */
+    private function assertParentIsNotDescendant(Category $category, ?int $parentId): void
+    {
+        $current = $parentId
+            ? Category::where('business_id', $category->business_id)->find($parentId)
+            : null;
+
+        $visited = [];
+
+        while ($current) {
+            if ((int) $current->id === (int) $category->id || in_array($current->id, $visited, true)) {
+                throw ValidationException::withMessages([
+                    'parent_id' => 'A category cannot be nested inside itself or one of its descendants.',
+                ]);
+            }
+
+            $visited[] = $current->id;
+            $current = $current->parent_id
+                ? Category::where('business_id', $category->business_id)->find($current->parent_id)
+                : null;
+        }
+    }
+
     public function destroy(Business $business, Category $category): RedirectResponse
     {
-        $this->authorize('delete', [$business, $category]);
+        $this->authorize('delete', [$category, $business]);
 
-        $category->delete();
+        $category->update(['is_active' => false]);
 
         return redirect()->route('business.categories.index', $business)
-            ->with('success', 'Category deleted successfully.');
+            ->with('success', 'Category archived successfully.');
     }
 }

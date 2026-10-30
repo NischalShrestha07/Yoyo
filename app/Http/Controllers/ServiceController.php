@@ -69,7 +69,7 @@ class ServiceController extends Controller
 
     public function show(Business $business, Service $service)
     {
-        $this->authorize('view', [$business, $service]);
+        $this->authorize('view', [$service, $business]);
 
         $service->load(['category']);
 
@@ -82,7 +82,7 @@ class ServiceController extends Controller
 
     public function edit(Business $business, Service $service): View
     {
-        $this->authorize('update', [$business, $service]);
+        $this->authorize('update', [$service, $business]);
 
         $categories = Category::where('business_id', $business->id)->where('is_active', true)->get();
 
@@ -91,7 +91,7 @@ class ServiceController extends Controller
 
     public function update(UpdateServiceRequest $request, Business $business, Service $service): RedirectResponse
     {
-        $this->authorize('update', [$business, $service]);
+        $this->authorize('update', [$service, $business]);
 
         $service->update([
             'category_id' => $request->category_id,
@@ -100,7 +100,7 @@ class ServiceController extends Controller
             'code' => $request->code,
             'description' => $request->description,
             'selling_price' => $request->selling_price,
-            'is_active' => $request->boolean('is_active', true),
+            'is_active' => $request->has('is_active') ? $request->boolean('is_active') : $service->is_active,
             'attributes' => $request->attributes ?? [],
         ]);
 
@@ -110,7 +110,7 @@ class ServiceController extends Controller
 
     public function archive(Business $business, Service $service): RedirectResponse
     {
-        $this->authorize('archive', [$business, $service]);
+        $this->authorize('archive', [$service, $business]);
 
         $service->update(['is_active' => false]);
 
@@ -120,11 +120,11 @@ class ServiceController extends Controller
 
     public function destroy(Business $business, Service $service): RedirectResponse
     {
-        $this->authorize('delete', [$business, $service]);
+        $this->authorize('delete', [$service, $business]);
 
-        $service->delete();
+        $service->update(['is_active' => false]);
 
         return redirect()->route('business.services.index', $business)
-            ->with('success', 'Service deleted successfully.');
+            ->with('success', 'Service archived successfully.');
     }
 }

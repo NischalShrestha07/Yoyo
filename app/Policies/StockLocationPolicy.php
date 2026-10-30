@@ -2,41 +2,41 @@
 
 namespace App\Policies;
 
+use App\Models\Business;
 use App\Models\StockLocation;
 use App\Models\User;
-use App\Models\Business;
+use App\Policies\Concerns\AuthorizesBusinessMembers;
 
 class StockLocationPolicy
 {
-    public function viewAny(User $user, Business $business): bool
+    use AuthorizesBusinessMembers;
+
+    public function viewAny(User $user, ?Business $business = null): bool
     {
-        return $user->is_active && $business->users()->where('user_id', $user->id)->exists();
+        return $business instanceof Business
+            ? $this->isMember($user, $business)
+            : $user->is_active;
     }
 
-    public function view(User $user, Business $business, StockLocation $stockLocation): bool
+    public function view(User $user, StockLocation $stockLocation, ?Business $business = null): bool
     {
-        return $user->is_active && 
-               $business->users()->where('user_id', $user->id)->exists() &&
-               $stockLocation->business_id === $business->id;
+        return $this->ownsModel($user, $stockLocation, $business);
     }
 
-    public function create(User $user, Business $business): bool
+    public function create(User $user, ?Business $business = null): bool
     {
-        return $user->is_active && 
-               $business->users()->where('user_id', $user->id)->exists();
+        return $business instanceof Business
+            ? $this->isMember($user, $business)
+            : $user->is_active;
     }
 
-    public function update(User $user, Business $business, StockLocation $stockLocation): bool
+    public function update(User $user, StockLocation $stockLocation, ?Business $business = null): bool
     {
-        return $user->is_active && 
-               $business->users()->where('user_id', $user->id)->exists() &&
-               $stockLocation->business_id === $business->id;
+        return $this->ownsModel($user, $stockLocation, $business);
     }
 
-    public function delete(User $user, Business $business, StockLocation $stockLocation): bool
+    public function delete(User $user, StockLocation $stockLocation, ?Business $business = null): bool
     {
-        return $user->is_active && 
-               $business->users()->where('user_id', $user->id)->exists() &&
-               $stockLocation->business_id === $business->id;
+        return $this->ownsModel($user, $stockLocation, $business);
     }
 }

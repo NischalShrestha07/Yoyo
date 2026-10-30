@@ -9,6 +9,7 @@ use App\Models\Service;
 use App\Models\Category;
 use App\Models\StockLocation;
 use App\Models\StockMovement;
+use App\Models\UnitOfMeasurement;
 use App\Policies\BusinessPolicy;
 use App\Policies\BusinessMembership;
 use App\Models\BusinessMembership as BusinessMembershipModel;
@@ -22,6 +23,7 @@ use App\Policies\ServicePolicy;
 use App\Policies\CategoryPolicy;
 use App\Policies\StockLocationPolicy;
 use App\Policies\StockMovementPolicy;
+use App\Policies\UnitOfMeasurementPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -42,6 +44,7 @@ class AuthServiceProvider extends ServiceProvider
         Category::class => CategoryPolicy::class,
         StockLocation::class => StockLocationPolicy::class,
         StockMovement::class => StockMovementPolicy::class,
+        UnitOfMeasurement::class => UnitOfMeasurementPolicy::class,
     ];
 
     /**
