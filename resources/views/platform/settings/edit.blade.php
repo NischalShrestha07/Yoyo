@@ -7,7 +7,7 @@
 
 <div class="card">
     <div class="card-body">
-        <form action="{{ route('platform.settings.update') }}" method="POST">
+        <form action="{{ route('platform.settings.edit') }}" method="POST">
             @csrf
 
             <div class="row">

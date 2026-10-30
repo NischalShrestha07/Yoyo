@@ -44,12 +44,25 @@ class SettingTest extends TestCase
         ]);
 
         // Add admin as member
-        $this->business->memberships()->create([
+        $membership = $this->business->memberships()->create([
             'user_id' => $this->admin->id,
             'status' => 'active',
             'is_default' => true,
             'joined_at' => now(),
         ]);
+
+        // Assign admin role to admin user
+        $adminRole = \App\Models\Role::create([
+            'business_id' => $this->business->id,
+            'name' => 'Admin',
+            'slug' => 'admin',
+            'description' => 'Full access to all business features',
+            'is_system' => true,
+        ]);
+
+        $membership->roles()->attach($adminRole->id);
+        
+        
 
         // Create business settings
         BusinessSetting::create([

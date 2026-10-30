@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Business;
 use App\Models\BusinessModule;
 use App\Models\Module;
+use Illuminate\Database\DatabaseManager;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class ModuleController extends Controller
@@ -26,7 +28,7 @@ class ModuleController extends Controller
 
     public function edit(Business $business): View
     {
-        $this->authorize('manage', $business);
+        $this->authorize('viewAny', $business);
 
         $modules = Module::all();
         $businessModules = $business->modules()->withPivot('enabled', 'settings')->get();
@@ -36,7 +38,7 @@ class ModuleController extends Controller
 
     public function update(Request $request, Business $business): RedirectResponse
     {
-        $this->authorize('manage', $business);
+        $this->authorize('update', $business);
 
         $request->validate([
             'modules' => ['array'],
@@ -48,30 +50,59 @@ class ModuleController extends Controller
             $module = Module::findOrFail($moduleId);
             $businessModule = $business->modules()->where('module_id', $moduleId)->first();
 
+            
+
             if ($moduleData['enabled']) {
                 if (!$businessModule) {
-                    $business->modules()->attach($moduleId, [
+                    $settings = json_encode($moduleData['settings'] ?? []);
+                    
+                    DB::table('business_modules')->insert([
+                        'business_id' => $business->id,
+                        'module_id' => $moduleId,
                         'enabled' => true,
                         'enabled_by' => auth()->id(),
                         'enabled_at' => now(),
-                        'settings' => $moduleData['settings'] ?? [],
+                        'settings' => $settings,
+                        'created_at' => now(),
+                        'updated_at' => now(),
                     ]);
                 } else {
-                    $businessModule->update([
-                        'enabled' => true,
-                        'enabled_by' => auth()->id(),
-                        'enabled_at' => now(),
-                        'settings' => $moduleData['settings'] ?? [],
-                    ]);
+                    $settings = json_encode($moduleData['settings'] ?? []);
+                    
+                    DB::table('business_modules')
+                        ->where('id', $businessModule->id)
+                        ->update([
+                            'enabled' => true,
+                            'enabled_by' => auth()->id(),
+                            'enabled_at' => now(),
+                            'disabled_at' => null,
+                            'settings' => $settings,
+                            'updated_at' => now(),
+                        ]);
                 }
             } else {
-                if ($businessModule) {
-                    $businessModule->update([
+                if (!$businessModule) {
+                    DB::table('business_modules')->insert([
+                        'business_id' => $business->id,
+                        'module_id' => $moduleId,
                         'enabled' => false,
                         'disabled_at' => now(),
+                        'settings' => json_encode($moduleData['settings'] ?? []),
+                        'created_at' => now(),
+                        'updated_at' => now(),
                     ]);
+                } else {
+                    DB::table('business_modules')
+                        ->where('id', $businessModule->id)
+                        ->update([
+                            'enabled' => false,
+                            'disabled_at' => now(),
+                            'updated_at' => now(),
+                        ]);
                 }
             }
+            
+            
         }
 
         return redirect()->route('platform.businesses.show', $business)

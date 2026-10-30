@@ -73,4 +73,44 @@ class Business extends Model
     {
         return $this->hasMany(AuditLog::class);
     }
+
+    public function categories()
+    {
+        return $this->hasMany(Category::class);
+    }
+
+    public function unitsOfMeasurement()
+    {
+        return $this->hasMany(UnitOfMeasurement::class);
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+
+    public function services()
+    {
+        return $this->hasMany(Service::class);
+    }
+
+    public function stockLocations()
+    {
+        return $this->hasMany(StockLocation::class);
+    }
+
+    public function stockMovements()
+    {
+        return $this->hasMany(StockMovement::class);
+    }
+
+    public function stockBalances()
+    {
+        return $this->hasMany(StockBalance::class);
+    }
+
+    public function stockReservations()
+    {
+        return $this->hasMany(StockReservation::class);
+    }
 }

@@ -20,7 +20,7 @@ class UpdateBusinessRequest extends FormRequest
             'email' => ['nullable', 'string', 'email', 'max:255'],
             'address' => ['nullable', 'string', 'max:500'],
             'tax_id' => ['nullable', 'string', 'max:50'],
-            'is_active' => ['boolean'],
+            'is_active' => ['nullable', 'boolean'],
         ];
     }
 }

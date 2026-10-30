@@ -15,7 +15,7 @@ class MembershipController extends Controller
 {
     public function index(Business $business): View
     {
-        $this->authorize('view', $business);
+        $this->authorize('viewAny', $business);
 
         $memberships = $business->memberships()
             ->with(['user', 'roles'])
@@ -27,14 +27,14 @@ class MembershipController extends Controller
 
     public function create(Business $business): View
     {
-        $this->authorize('manage', $business);
+        $this->authorize('create', $business);
 
         return view('platform.memberships.create', compact('business'));
     }
 
     public function store(InviteUserRequest $request, Business $business): RedirectResponse
     {
-        $this->authorize('manage', $business);
+        $this->authorize('create', $business);
 
         $user = User::where('email', $request->email)->first();
 
@@ -80,7 +80,7 @@ class MembershipController extends Controller
 
     public function edit(Business $business, BusinessMembership $membership): View
     {
-        $this->authorize('manage', $business);
+        $this->authorize('update', $business, $membership);
 
         $membership->load(['user', 'roles']);
 
@@ -89,7 +89,7 @@ class MembershipController extends Controller
 
     public function update(Request $request, Business $business, BusinessMembership $membership): RedirectResponse
     {
-        $this->authorize('manage', $business);
+        $this->authorize('update', $business, $membership);
 
         $request->validate([
             'status' => ['required', 'in:invited,active,suspended,inactive'],
@@ -113,7 +113,7 @@ class MembershipController extends Controller
 
     public function destroy(Business $business, BusinessMembership $membership): RedirectResponse
     {
-        $this->authorize('manage', $business);
+        $this->authorize('delete', $business, $membership);
 
         $membership->update([
             'status' => 'inactive',

@@ -53,7 +53,7 @@ class SettingController extends Controller
 
     public function businessEdit(Business $business): View
     {
-        $this->authorize('manage', $business);
+        $this->authorize('viewAny', $business);
 
         $settings = $business->settings()->latest()->paginate(10);
 
@@ -62,7 +62,7 @@ class SettingController extends Controller
 
     public function businessUpdate(Request $request, Business $business): RedirectResponse
     {
-        $this->authorize('manage', $business);
+        $this->authorize('update', $business);
 
         $request->validate([
             'settings' => ['array'],

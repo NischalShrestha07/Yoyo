@@ -102,12 +102,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Assign admin role to admin user
-        $adminUser->businesses()->attach($business->id, [
-            'status' => 'active',
-            'is_default' => true,
-            'joined_at' => now(),
-        ]);
-
         $business->memberships()->where('user_id', $adminUser->id)->first()
             ->roles()->attach($adminRole->id);
     }

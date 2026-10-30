@@ -7,7 +7,7 @@
 
 <div class="card">
     <div class="card-body">
-        <form action="{{ route('platform.settings.update', $business) }}" method="POST">
+        <form action="{{ route('platform.settings.business', $business) }}" method="POST">
             @csrf
 
             <div class="mb-4">

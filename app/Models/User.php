@@ -58,4 +58,32 @@ class User extends Authenticatable
     {
         return (bool) $this->is_active;
     }
+
+    /**
+     * Get all of the businesses the user is a member of.
+     */
+    public function businesses()
+    {
+        return $this->belongsToMany(Business::class, 'business_memberships')
+            ->withPivot(['status', 'is_default'])
+            ->withTimestamps();
+    }
+
+    /**
+     * Get the businesses where the user is a member.
+     */
+    public function memberships()
+    {
+        return $this->hasMany(BusinessMembership::class);
+    }
+
+    /**
+     * Get all of the user's roles.
+     */
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'membership_roles', 'user_id', 'role_id')
+            ->withPivot(['business_id'])
+            ->withTimestamps();
+    }
 }

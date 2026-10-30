@@ -19,11 +19,27 @@ class BusinessModule extends Model
         'disabled_at',
     ];
 
+    protected function getSettingsAttribute($value)
+    {
+        if ($value === null || $value === '') {
+            return null;
+        }
+        return json_decode($value, true);
+    }
+
+    protected function setSettingsAttribute($value)
+    {
+        if (is_array($value)) {
+            $this->attributes['settings'] = json_encode($value, JSON_UNESCAPED_SLASHES);
+        } else {
+            $this->attributes['settings'] = $value;
+        }
+    }
+
     protected function casts(): array
     {
         return [
             'enabled' => 'boolean',
-            'settings' => 'array',
             'enabled_at' => 'datetime',
             'disabled_at' => 'datetime',
         ];

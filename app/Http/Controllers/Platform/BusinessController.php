@@ -82,7 +82,7 @@ class BusinessController extends Controller
             'email' => $request->email,
             'address' => $request->address,
             'tax_id' => $request->tax_id,
-            'is_active' => $request->has('is_active'),
+            'is_active' => $request->boolean('is_active', true),
         ]);
 
         return redirect()->route('platform.businesses.index')

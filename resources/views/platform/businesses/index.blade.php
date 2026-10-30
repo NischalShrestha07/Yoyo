@@ -47,7 +47,7 @@
                                 <span class="badge bg-danger">Inactive</span>
                             @endif
                         </td>
-                        <td>{{ $business->creator->name }}</td>
+<td>{{ $business->creator ? $business->creator->name : 'N/A' }}</td>
                         <td>
                             <a href="{{ route('platform.businesses.show', $business) }}" class="btn btn-sm btn-info">View</a>
                             <a href="{{ route('platform.businesses.edit', $business) }}" class="btn btn-sm btn-warning">Edit</a>

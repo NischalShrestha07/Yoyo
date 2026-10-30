@@ -106,7 +106,7 @@ class BusinessTest extends TestCase
             'phone' => '+0987654321',
             'address' => '456 Updated St',
             'tax_id' => 'TAX654321',
-            'is_active' => false,
+            'is_active' => '0',
         ];
 
         $response = $this->put("/platform/businesses/{$business->id}", $updatedData);
@@ -116,8 +116,11 @@ class BusinessTest extends TestCase
             'id' => $business->id,
             'name' => 'Updated Business Name',
             'type' => 'electronics',
-            'is_active' => false,
         ]);
+        
+        // Check if is_active was updated
+        $updatedBusiness = Business::find($business->id);
+        $this->assertFalse($updatedBusiness->is_active);
     }
 
     public function test_can_delete_business(): void

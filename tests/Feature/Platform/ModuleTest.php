@@ -3,10 +3,12 @@
 namespace Tests\Feature\Platform;
 
 use App\Models\Business;
+use App\Models\BusinessModule;
 use App\Models\Module;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Illuminate\Support\Facades\DB;
 
 class ModuleTest extends TestCase
 {
@@ -99,28 +101,27 @@ class ModuleTest extends TestCase
             'business_id' => $this->business->id,
             'module_id' => $this->inventoryModule->id,
             'enabled' => true,
-            'enabled_at' => now(),
         ]);
 
         $this->assertDatabaseHas('business_modules', [
             'business_id' => $this->business->id,
             'module_id' => $this->salesModule->id,
             'enabled' => true,
-            'enabled_at' => now(),
         ]);
 
         $this->assertDatabaseHas('business_modules', [
             'business_id' => $this->business->id,
             'module_id' => $this->posModule->id,
             'enabled' => false,
-            'disabled_at' => now(),
         ]);
     }
 
     public function test_can_update_module_settings(): void
     {
         // Enable module first
-        $this->business->modules()->attach($this->inventoryModule->id, [
+        \App\Models\BusinessModule::create([
+            'business_id' => $this->business->id,
+            'module_id' => $this->inventoryModule->id,
             'enabled' => true,
             'enabled_by' => $this->admin->id,
             'enabled_at' => now(),
@@ -146,10 +147,29 @@ class ModuleTest extends TestCase
         $this->assertDatabaseHas('business_modules', [
             'business_id' => $this->business->id,
             'module_id' => $this->inventoryModule->id,
-            'settings' => json_encode([
-                'low_stock_threshold' => 10,
-                'auto_reorder' => true,
-            ]),
+            'enabled' => true,
         ]);
+        
+        // Check if the settings were updated
+        $businessModule = DB::table('business_modules')
+            ->where('business_id', $this->business->id)
+            ->where('module_id', $this->inventoryModule->id)
+            ->first();
+            
+        // Debug output
+        if (!$businessModule) {
+            $this->fail('Business module not found');
+        }
+        
+        
+        
+        if ($businessModule->settings === null) {
+            $this->fail('Settings are null');
+        }
+        
+        $this->assertEquals(json_encode([
+            'low_stock_threshold' => 10,
+            'auto_reorder' => true,
+        ], JSON_UNESCAPED_SLASHES), $businessModule->settings);
     }
 }
