@@ -106,6 +106,12 @@ Route::middleware(['auth', 'active'])->group(function () {
 
         // Branches
         Route::resource('branches', \App\Http\Controllers\BranchController::class)->except(['edit', 'update', 'destroy']);
+
+        // Reports
+        Route::get('reports', [\App\Http\Controllers\ReportController::class, 'index'])->name('reports.index');
+        Route::get('reports/sales', [\App\Http\Controllers\ReportController::class, 'sales'])->name('reports.sales');
+        Route::get('reports/inventory', [\App\Http\Controllers\ReportController::class, 'inventory'])->name('reports.inventory');
+        Route::get('reports/profit-loss', [\App\Http\Controllers\ReportController::class, 'profitLoss'])->name('reports.profit-loss');
     });
 });
 
