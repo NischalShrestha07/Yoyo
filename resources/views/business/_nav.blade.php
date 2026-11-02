@@ -2,9 +2,11 @@
     $links = [
         ['label' => 'POS', 'route' => 'business.pos.index', 'icon' => 'bi-cart-check'],
         ['label' => 'Sales', 'route' => 'business.sales.index', 'icon' => 'bi-receipt'],
+        ['label' => 'Quotations', 'route' => 'business.quotations.index', 'icon' => 'bi-file-earmark-text'],
         ['label' => 'Purchases', 'route' => 'business.purchases.index', 'icon' => 'bi-bag-check'],
         ['label' => 'Suppliers', 'route' => 'business.suppliers.index', 'icon' => 'bi-truck'],
         ['label' => 'Customers', 'route' => 'business.customers.index', 'icon' => 'bi-people'],
+        ['label' => 'Expenses', 'route' => 'business.expenses.index', 'icon' => 'bi-cash-stack'],
         ['label' => 'Products', 'route' => 'business.products.index', 'icon' => 'bi-box'],
         ['label' => 'Services', 'route' => 'business.services.index', 'icon' => 'bi-wrench'],
         ['label' => 'Categories', 'route' => 'business.categories.index', 'icon' => 'bi-tags'],

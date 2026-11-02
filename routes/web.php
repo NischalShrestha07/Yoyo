@@ -96,6 +96,13 @@ Route::middleware(['auth', 'active'])->group(function () {
         // Purchases
         Route::resource('purchases', \App\Http\Controllers\PurchaseOrderController::class)->except(['edit', 'update', 'destroy']);
         Route::post('purchases/{purchase_order}/receive', [\App\Http\Controllers\PurchaseOrderController::class, 'receive'])->name('purchases.receive');
+
+        // Expenses
+        Route::resource('expenses', \App\Http\Controllers\ExpenseController::class)->except(['edit', 'update']);
+
+        // Quotations
+        Route::resource('quotations', \App\Http\Controllers\QuotationController::class)->except(['edit', 'update', 'destroy']);
+        Route::post('quotations/{quotation}/convert', [\App\Http\Controllers\QuotationController::class, 'convertToSale'])->name('quotations.convert');
     });
 });
 

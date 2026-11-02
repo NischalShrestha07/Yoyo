@@ -1,0 +1,38 @@
+<?php
+
+namespace App\Policies;
+
+use App\Models\Business;
+use App\Models\Quotation;
+use App\Models\User;
+use App\Policies\Concerns\AuthorizesBusinessMembers;
+
+class QuotationPolicy
+{
+    use AuthorizesBusinessMembers;
+
+    public function viewAny(User $user, ?Business $business = null): bool
+    {
+        return $business instanceof Business ? $this->isMember($user, $business) : $user->is_active;
+    }
+
+    public function view(User $user, Quotation $quotation, ?Business $business = null): bool
+    {
+        return $this->ownsModel($user, $quotation, $business);
+    }
+
+    public function create(User $user, ?Business $business = null): bool
+    {
+        return $business instanceof Business ? $this->isMember($user, $business) : $user->is_active;
+    }
+
+    public function update(User $user, Quotation $quotation, ?Business $business = null): bool
+    {
+        return $this->ownsModel($user, $quotation, $business);
+    }
+
+    public function delete(User $user, Quotation $quotation, ?Business $business = null): bool
+    {
+        return $this->ownsModel($user, $quotation, $business);
+    }
+}

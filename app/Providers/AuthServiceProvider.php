@@ -68,6 +68,9 @@ class AuthServiceProvider extends ServiceProvider
         Supplier::class => SupplierPolicy::class,
         PurchaseOrder::class => PurchaseOrderPolicy::class,
         PurchaseOrderItem::class => PurchaseOrderItemPolicy::class,
+        \App\Models\Expense::class => \App\Policies\ExpensePolicy::class,
+        \App\Models\Quotation::class => \App\Policies\QuotationPolicy::class,
+        \App\Models\QuotationItem::class => \App\Policies\QuotationItemPolicy::class,
     ];
 
     /**
@@ -89,3 +92,9 @@ class AuthServiceProvider extends ServiceProvider
         });
     }
 }
+use App\Models\Expense;
+use App\Models\Quotation;
+use App\Models\QuotationItem;
+use App\Policies\ExpensePolicy;
+use App\Policies\QuotationPolicy;
+use App\Policies\QuotationItemPolicy;
