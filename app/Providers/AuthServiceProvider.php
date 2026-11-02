@@ -15,6 +15,9 @@ use App\Models\Sale;
 use App\Models\SaleItem;
 use App\Models\Payment;
 use App\Models\SaleReturn;
+use App\Models\Supplier;
+use App\Models\PurchaseOrder;
+use App\Models\PurchaseOrderItem;
 use App\Policies\BusinessPolicy;
 use App\Models\BusinessMembership as BusinessMembershipModel;
 use App\Models\Setting as SettingModel;
@@ -33,6 +36,9 @@ use App\Policies\SalePolicy;
 use App\Policies\SaleItemPolicy;
 use App\Policies\PaymentPolicy;
 use App\Policies\SaleReturnPolicy;
+use App\Policies\SupplierPolicy;
+use App\Policies\PurchaseOrderPolicy;
+use App\Policies\PurchaseOrderItemPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -59,6 +65,9 @@ class AuthServiceProvider extends ServiceProvider
         SaleItem::class => SaleItemPolicy::class,
         Payment::class => PaymentPolicy::class,
         SaleReturn::class => SaleReturnPolicy::class,
+        Supplier::class => SupplierPolicy::class,
+        PurchaseOrder::class => PurchaseOrderPolicy::class,
+        PurchaseOrderItem::class => PurchaseOrderItemPolicy::class,
     ];
 
     /**

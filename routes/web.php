@@ -89,6 +89,13 @@ Route::middleware(['auth', 'active'])->group(function () {
 
         // Customers
         Route::resource('customers', CustomerController::class);
+
+        // Suppliers
+        Route::resource('suppliers', \App\Http\Controllers\SupplierController::class);
+
+        // Purchases
+        Route::resource('purchases', \App\Http\Controllers\PurchaseOrderController::class)->except(['edit', 'update', 'destroy']);
+        Route::post('purchases/{purchase_order}/receive', [\App\Http\Controllers\PurchaseOrderController::class, 'receive'])->name('purchases.receive');
     });
 });
 
