@@ -10,8 +10,12 @@ use App\Models\Category;
 use App\Models\StockLocation;
 use App\Models\StockMovement;
 use App\Models\UnitOfMeasurement;
+use App\Models\Customer;
+use App\Models\Sale;
+use App\Models\SaleItem;
+use App\Models\Payment;
+use App\Models\SaleReturn;
 use App\Policies\BusinessPolicy;
-use App\Policies\BusinessMembership;
 use App\Models\BusinessMembership as BusinessMembershipModel;
 use App\Models\Setting as SettingModel;
 use App\Models\Module as ModuleModel;
@@ -24,6 +28,11 @@ use App\Policies\CategoryPolicy;
 use App\Policies\StockLocationPolicy;
 use App\Policies\StockMovementPolicy;
 use App\Policies\UnitOfMeasurementPolicy;
+use App\Policies\CustomerPolicy;
+use App\Policies\SalePolicy;
+use App\Policies\SaleItemPolicy;
+use App\Policies\PaymentPolicy;
+use App\Policies\SaleReturnPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -45,6 +54,11 @@ class AuthServiceProvider extends ServiceProvider
         StockLocation::class => StockLocationPolicy::class,
         StockMovement::class => StockMovementPolicy::class,
         UnitOfMeasurement::class => UnitOfMeasurementPolicy::class,
+        Customer::class => CustomerPolicy::class,
+        Sale::class => SalePolicy::class,
+        SaleItem::class => SaleItemPolicy::class,
+        Payment::class => PaymentPolicy::class,
+        SaleReturn::class => SaleReturnPolicy::class,
     ];
 
     /**

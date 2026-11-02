@@ -16,6 +16,9 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UnitOfMeasurementController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\StockLocationController;
+use App\Http\Controllers\PosController;
+use App\Http\Controllers\SaleController;
+use App\Http\Controllers\CustomerController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -69,6 +72,23 @@ Route::middleware(['auth', 'active'])->group(function () {
         Route::delete('inventory/reservations/{reservation}', [StockController::class, 'releaseReservation'])->name('inventory.reservations.destroy');
         Route::get('inventory/settings', [StockController::class, 'settingsForm'])->name('inventory.settings');
         Route::post('inventory/settings', [StockController::class, 'settingsUpdate'])->name('inventory.settings.update');
+
+        // POS
+        Route::get('pos', [PosController::class, 'index'])->name('pos.index');
+        Route::get('pos/search', [PosController::class, 'search'])->name('pos.search');
+        Route::post('pos/checkout', [PosController::class, 'checkout'])->name('pos.checkout');
+        Route::get('pos/receipt/{sale}', [PosController::class, 'receipt'])->name('pos.receipt');
+        Route::get('pos/print/{sale}', [PosController::class, 'print'])->name('pos.print');
+
+        // Sales
+        Route::get('sales', [SaleController::class, 'index'])->name('sales.index');
+        Route::get('sales/summary', [SaleController::class, 'summary'])->name('sales.summary');
+        Route::get('sales/{sale}', [SaleController::class, 'show'])->name('sales.show');
+        Route::post('sales/{sale}/return', [SaleController::class, 'return'])->name('sales.return');
+        Route::post('sales/{sale}/cancel', [SaleController::class, 'cancel'])->name('sales.cancel');
+
+        // Customers
+        Route::resource('customers', CustomerController::class);
     });
 });
 
