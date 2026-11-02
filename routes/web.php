@@ -103,6 +103,9 @@ Route::middleware(['auth', 'active'])->group(function () {
         // Quotations
         Route::resource('quotations', \App\Http\Controllers\QuotationController::class)->except(['edit', 'update', 'destroy']);
         Route::post('quotations/{quotation}/convert', [\App\Http\Controllers\QuotationController::class, 'convertToSale'])->name('quotations.convert');
+
+        // Branches
+        Route::resource('branches', \App\Http\Controllers\BranchController::class)->except(['edit', 'update', 'destroy']);
     });
 });
 

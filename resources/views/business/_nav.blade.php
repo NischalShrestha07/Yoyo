@@ -7,6 +7,7 @@
         ['label' => 'Suppliers', 'route' => 'business.suppliers.index', 'icon' => 'bi-truck'],
         ['label' => 'Customers', 'route' => 'business.customers.index', 'icon' => 'bi-people'],
         ['label' => 'Expenses', 'route' => 'business.expenses.index', 'icon' => 'bi-cash-stack'],
+        ['label' => 'Branches', 'route' => 'business.branches.index', 'icon' => 'bi-diagram-3'],
         ['label' => 'Products', 'route' => 'business.products.index', 'icon' => 'bi-box'],
         ['label' => 'Services', 'route' => 'business.services.index', 'icon' => 'bi-wrench'],
         ['label' => 'Categories', 'route' => 'business.categories.index', 'icon' => 'bi-tags'],
