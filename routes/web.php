@@ -134,6 +134,9 @@ Route::middleware(['auth', 'active'])->group(function () {
         // Vendors & Bills
         Route::resource('vendors', \App\Http\Controllers\VendorController::class);
         Route::resource('bills', \App\Http\Controllers\BillController::class);
+        Route::resource('payments-made', \App\Http\Controllers\PaymentMadeController::class)->except(['edit', 'update', 'destroy']);
+        Route::resource('credit-notes', \App\Http\Controllers\CreditNoteController::class)->except(['edit', 'update', 'destroy']);
+        Route::resource('debit-notes', \App\Http\Controllers\DebitNoteController::class)->except(['edit', 'update', 'destroy']);
     });
 });
 

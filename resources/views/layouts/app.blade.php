@@ -200,6 +200,24 @@
                             </a>
                         </li>
                         <li class="menu-item">
+                            <a class="menu-link {{ request()->routeIs('business.payments-made.*') ? 'active' : '' }}" href="{{ route('business.payments-made.index', $business) }}">
+                                <i class="bi bi-wallet2"></i>
+                                <span>Payments Made</span>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a class="menu-link {{ request()->routeIs('business.credit-notes.*') ? 'active' : '' }}" href="{{ route('business.credit-notes.index', $business) }}">
+                                <i class="bi bi-file-earmark-minus"></i>
+                                <span>Credit Notes</span>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a class="menu-link {{ request()->routeIs('business.debit-notes.*') ? 'active' : '' }}" href="{{ route('business.debit-notes.index', $business) }}">
+                                <i class="bi bi-file-earmark-plus"></i>
+                                <span>Debit Notes</span>
+                            </a>
+                        </li>
+                        <li class="menu-item">
                             <a class="menu-link {{ request()->routeIs('business.accounting.*') ? 'active' : '' }}" href="{{ route('business.accounting.dashboard', $business) }}">
                                 <i class="bi bi-calculator"></i>
                                 <span>Accounting</span>
