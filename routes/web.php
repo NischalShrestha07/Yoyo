@@ -112,6 +112,14 @@ Route::middleware(['auth', 'active'])->group(function () {
         Route::get('reports/sales', [\App\Http\Controllers\ReportController::class, 'sales'])->name('reports.sales');
         Route::get('reports/inventory', [\App\Http\Controllers\ReportController::class, 'inventory'])->name('reports.inventory');
         Route::get('reports/profit-loss', [\App\Http\Controllers\ReportController::class, 'profitLoss'])->name('reports.profit-loss');
+
+        // Business Settings
+        Route::get('settings', [\App\Http\Controllers\BusinessSettingsController::class, 'index'])->name('settings.index');
+        Route::put('settings', [\App\Http\Controllers\BusinessSettingsController::class, 'update'])->name('settings.update');
+
+        // Cash Registers
+        Route::resource('cash-registers', \App\Http\Controllers\CashRegisterController::class)->except(['edit', 'update', 'destroy']);
+        Route::post('cash-registers/{cash_register}/close', [\App\Http\Controllers\CashRegisterController::class, 'close'])->name('cash-registers.close');
     });
 });
 

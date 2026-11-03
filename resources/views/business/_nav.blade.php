@@ -8,6 +8,7 @@
         ['label' => 'Customers', 'route' => 'business.customers.index', 'icon' => 'bi-people'],
         ['label' => 'Expenses', 'route' => 'business.expenses.index', 'icon' => 'bi-cash-stack'],
         ['label' => 'Reports', 'route' => 'business.reports.index', 'icon' => 'bi-bar-chart'],
+        ['label' => 'Cash Register', 'route' => 'business.cash-registers.index', 'icon' => 'bi-cash'],
         ['label' => 'Branches', 'route' => 'business.branches.index', 'icon' => 'bi-diagram-3'],
         ['label' => 'Products', 'route' => 'business.products.index', 'icon' => 'bi-box'],
         ['label' => 'Services', 'route' => 'business.services.index', 'icon' => 'bi-wrench'],
@@ -15,6 +16,7 @@
         ['label' => 'Units', 'route' => 'business.units.index', 'icon' => 'bi-rulers'],
         ['label' => 'Inventory', 'route' => 'business.inventory.index', 'icon' => 'bi-boxes'],
         ['label' => 'Locations', 'route' => 'business.stock-locations.index', 'icon' => 'bi-geo-alt'],
+        ['label' => 'Settings', 'route' => 'business.settings.index', 'icon' => 'bi-gear'],
     ];
 @endphp
 
