@@ -141,6 +141,18 @@
                                 <span>Suppliers</span>
                             </a>
                         </li>
+                        <li class="menu-item">
+                            <a class="menu-link {{ request()->routeIs('business.vendors.*') ? 'active' : '' }}" href="{{ route('business.vendors.index', $business) }}">
+                                <i class="bi bi-person-badge"></i>
+                                <span>Vendors</span>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a class="menu-link {{ request()->routeIs('business.bills.*') ? 'active' : '' }}" href="{{ route('business.bills.index', $business) }}">
+                                <i class="bi bi-receipt-cutoff"></i>
+                                <span>Bills</span>
+                            </a>
+                        </li>
 
                         <li class="menu-title">Inventory</li>
                         <li class="menu-item">

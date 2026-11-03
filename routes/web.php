@@ -130,6 +130,10 @@ Route::middleware(['auth', 'active'])->group(function () {
         Route::get('accounting', [\App\Http\Controllers\AccountingController::class, 'dashboard'])->name('accounting.dashboard');
         Route::get('accounting/chart-of-accounts', [\App\Http\Controllers\AccountingController::class, 'chartOfAccounts'])->name('accounting.chart-of-accounts');
         Route::get('accounting/journal-entries', [\App\Http\Controllers\AccountingController::class, 'journalEntries'])->name('accounting.journal-entries');
+
+        // Vendors & Bills
+        Route::resource('vendors', \App\Http\Controllers\VendorController::class);
+        Route::resource('bills', \App\Http\Controllers\BillController::class);
     });
 });
 

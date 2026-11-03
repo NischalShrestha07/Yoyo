@@ -75,6 +75,8 @@ class AuthServiceProvider extends ServiceProvider
         \App\Models\CashRegister::class => \App\Policies\CashRegisterPolicy::class,
         \App\Models\ChartOfAccount::class => \App\Policies\ChartOfAccountPolicy::class,
         \App\Models\JournalEntry::class => \App\Policies\JournalEntryPolicy::class,
+        \App\Models\Vendor::class => \App\Policies\VendorPolicy::class,
+        \App\Models\Bill::class => \App\Policies\BillPolicy::class,
     ];
 
     /**
