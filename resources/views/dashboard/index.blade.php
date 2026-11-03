@@ -3,61 +3,73 @@
 @section('title', 'Dashboard')
 
 @section('content')
-<div class="row mt-2">
-    <div class="col-12">
-        <h2><i class="bi bi-speedometer2"></i> Dashboard</h2>
-        <p class="text-muted">Welcome back, {{ Auth::user()->name }}!</p>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="mb-1 fw-bold">Dashboard</h2>
+        <p class="text-muted mb-0">Overview of your businesses</p>
     </div>
+    <a href="{{ route('businesses.create') }}" class="btn btn-primary">
+        <i class="bi bi-plus-lg"></i> Create Business
+    </a>
 </div>
 
-<div class="row">
-    <div class="col-lg-8">
-        <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <span><i class="bi bi-building"></i> My Businesses</span>
-            </div>
-            <div class="card-body">
-                @if($businesses->count() > 0)
-                    <div class="row">
-                        @foreach($businesses as $business)
-                            <div class="col-md-6 mb-3">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h5 class="card-title">{{ $business->name }}</h5>
-                                        <p class="card-text text-muted">{{ ucfirst($business->type ?? 'Business') }}</p>
-                                        <div class="d-flex gap-2 flex-wrap">
-                                            <a href="{{ route('business.pos.index', $business) }}" class="btn btn-sm btn-success"><i class="bi bi-cart-check"></i> POS</a>
-                                            <a href="{{ route('business.sales.index', $business) }}" class="btn btn-sm btn-primary"><i class="bi bi-receipt"></i> Sales</a>
-                                            <a href="{{ route('business.inventory.index', $business) }}" class="btn btn-sm btn-info text-white"><i class="bi bi-boxes"></i> Inventory</a>
-                                            <a href="{{ route('business.products.index', $business) }}" class="btn btn-sm btn-secondary"><i class="bi bi-box"></i> Products</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                @else
-                    <div class="text-center py-4">
-                        <i class="bi bi-building fs-1 text-muted"></i>
-                        <p class="text-muted mt-2">You are not a member of any business yet.</p>
-                    </div>
-                @endif
-            </div>
+@if($businesses->isEmpty())
+    <div class="card text-center py-5">
+        <div class="card-body">
+            <i class="bi bi-shop display-1 text-muted"></i>
+            <h4 class="mt-3">No Businesses Yet</h4>
+            <p class="text-muted">Create your first business to start managing sales, purchases, and inventory</p>
+            <a href="{{ route('businesses.create') }}" class="btn btn-primary mt-2">
+                <i class="bi bi-plus-lg"></i> Create Your First Business
+            </a>
         </div>
     </div>
-    <div class="col-lg-4">
-        <div class="card">
-            <div class="card-header"><i class="bi bi-lightning-charge"></i> Quick Actions</div>
-            <div class="card-body">
-                <div class="d-grid gap-2">
-                    @if(isset($businesses) && $businesses->count() > 0)
-                        <a href="{{ route('business.pos.index', $businesses->first()) }}" class="btn btn-success"><i class="bi bi-cart-plus"></i> Open POS</a>
-                        <a href="{{ route('business.products.create', $businesses->first()) }}" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Add Product</a>
-                        <a href="{{ route('business.customers.create', $businesses->first()) }}" class="btn btn-info text-white"><i class="bi bi-person-plus"></i> Add Customer</a>
-                    @endif
+@else
+    <div class="row g-4">
+        @foreach($businesses as $business)
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 hover-shadow">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                                <i class="bi bi-shop fs-4"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h5 class="mb-0 fw-semibold">{{ $business->name }}</h5>
+                                <small class="text-muted">{{ $business->type ?? 'Retail' }}</small>
+                            </div>
+                        </div>
+                        <p class="text-muted small mb-3">{{ Str::limit($business->description ?? 'No description', 80) }}</p>
+                        <div class="d-grid gap-2">
+                            <a href="{{ route('business.pos.index', $business) }}" class="btn btn-primary">
+                                <i class="bi bi-cart-check"></i> Open POS
+                            </a>
+                            <div class="btn-group">
+                                <a href="{{ route('business.reports.index', $business) }}" class="btn btn-outline-secondary btn-sm">
+                                    <i class="bi bi-bar-chart"></i> Reports
+                                </a>
+                                <a href="{{ route('business.products.index', $business) }}" class="btn btn-outline-secondary btn-sm">
+                                    <i class="bi bi-box"></i> Products
+                                </a>
+                                <a href="{{ route('business.settings.index', $business) }}" class="btn btn-outline-secondary btn-sm">
+                                    <i class="bi bi-gear"></i> Settings
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        @endforeach
     </div>
-</div>
+@endif
+
+<style>
+.hover-shadow {
+    transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+.hover-shadow:hover {
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+</style>
 @endsection
