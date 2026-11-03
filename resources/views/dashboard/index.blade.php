@@ -8,7 +8,7 @@
         <h4 class="mb-1 fw-semibold">Dashboard</h4>
         <p class="text-muted mb-0">Overview of your businesses</p>
     </div>
-    <a href="{{ route('businesses.create') }}" class="btn btn-primary">
+    <a href="{{ route('platform.businesses.create') }}" class="btn btn-primary">
         <i class="bi bi-plus-lg"></i> Create Business
     </a>
 </div>
@@ -19,7 +19,7 @@
             <i class="bi bi-shop display-1 text-muted"></i>
             <h5 class="mt-3">No Businesses Yet</h5>
             <p class="text-muted">Create your first business to start managing sales, purchases, and inventory</p>
-            <a href="{{ route('businesses.create') }}" class="btn btn-primary mt-2">
+            <a href="{{ route('platform.businesses.create') }}" class="btn btn-primary mt-2">
                 <i class="bi bi-plus-lg"></i> Create Your First Business
             </a>
         </div>
