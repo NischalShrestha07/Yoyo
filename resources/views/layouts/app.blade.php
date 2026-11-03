@@ -168,7 +168,7 @@
                             </a>
                         </li>
 
-                        <li class="menu-title">Finance</li>
+                        <li class="menu-title">Finance & Accounting</li>
                         <li class="menu-item">
                             <a class="menu-link {{ request()->routeIs('business.expenses.*') ? 'active' : '' }}" href="{{ route('business.expenses.index', $business) }}">
                                 <i class="bi bi-cash-stack"></i>
@@ -179,6 +179,18 @@
                             <a class="menu-link {{ request()->routeIs('business.cash-registers.*') ? 'active' : '' }}" href="{{ route('business.cash-registers.index', $business) }}">
                                 <i class="bi bi-cash"></i>
                                 <span>Cash Register</span>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a class="menu-link {{ request()->routeIs('business.invoices.*') ? 'active' : '' }}" href="{{ route('business.invoices.index', $business) }}">
+                                <i class="bi bi-file-earmark-richtext"></i>
+                                <span>Invoices</span>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a class="menu-link {{ request()->routeIs('business.accounting.*') ? 'active' : '' }}" href="{{ route('business.accounting.dashboard', $business) }}">
+                                <i class="bi bi-calculator"></i>
+                                <span>Accounting</span>
                             </a>
                         </li>
 

@@ -73,6 +73,8 @@ class AuthServiceProvider extends ServiceProvider
         \App\Models\QuotationItem::class => \App\Policies\QuotationItemPolicy::class,
         \App\Models\Branch::class => \App\Policies\BranchPolicy::class,
         \App\Models\CashRegister::class => \App\Policies\CashRegisterPolicy::class,
+        \App\Models\ChartOfAccount::class => \App\Policies\ChartOfAccountPolicy::class,
+        \App\Models\JournalEntry::class => \App\Policies\JournalEntryPolicy::class,
     ];
 
     /**

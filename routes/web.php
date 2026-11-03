@@ -120,6 +120,16 @@ Route::middleware(['auth', 'active'])->group(function () {
         // Cash Registers
         Route::resource('cash-registers', \App\Http\Controllers\CashRegisterController::class)->except(['edit', 'update', 'destroy']);
         Route::post('cash-registers/{cash_register}/close', [\App\Http\Controllers\CashRegisterController::class, 'close'])->name('cash-registers.close');
+
+        // Invoices
+        Route::get('invoices', [\App\Http\Controllers\InvoiceController::class, 'index'])->name('invoices.index');
+        Route::get('invoices/{sale}', [\App\Http\Controllers\InvoiceController::class, 'show'])->name('invoices.show');
+        Route::get('invoices/{sale}/print', [\App\Http\Controllers\InvoiceController::class, 'print'])->name('invoices.print');
+
+        // Accounting
+        Route::get('accounting', [\App\Http\Controllers\AccountingController::class, 'dashboard'])->name('accounting.dashboard');
+        Route::get('accounting/chart-of-accounts', [\App\Http\Controllers\AccountingController::class, 'chartOfAccounts'])->name('accounting.chart-of-accounts');
+        Route::get('accounting/journal-entries', [\App\Http\Controllers\AccountingController::class, 'journalEntries'])->name('accounting.journal-entries');
     });
 });
 
