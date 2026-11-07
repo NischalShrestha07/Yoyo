@@ -188,6 +188,12 @@
                             </a>
                         </li>
                         <li class="menu-item">
+                            <a class="menu-link {{ request()->routeIs('business.taxes.*') ? 'active' : '' }}" href="{{ route('business.taxes.index', $business) }}">
+                                <i class="bi bi-percent"></i>
+                                <span>Taxes</span>
+                            </a>
+                        </li>
+                        <li class="menu-item">
                             <a class="menu-link {{ request()->routeIs('business.cash-registers.*') ? 'active' : '' }}" href="{{ route('business.cash-registers.index', $business) }}">
                                 <i class="bi bi-cash"></i>
                                 <span>Cash Register</span>
@@ -197,6 +203,12 @@
                             <a class="menu-link {{ request()->routeIs('business.invoices.*') ? 'active' : '' }}" href="{{ route('business.invoices.index', $business) }}">
                                 <i class="bi bi-file-earmark-richtext"></i>
                                 <span>Invoices</span>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a class="menu-link {{ request()->routeIs('business.recurring-invoices.*') ? 'active' : '' }}" href="{{ route('business.recurring-invoices.index', $business) }}">
+                                <i class="bi bi-arrow-repeat"></i>
+                                <span>Recurring</span>
                             </a>
                         </li>
                         <li class="menu-item">
@@ -224,7 +236,13 @@
                             </a>
                         </li>
 
-                        <li class="menu-title">Reports & Settings</li>
+                        <li class="menu-title">Projects & Reports</li>
+                        <li class="menu-item">
+                            <a class="menu-link {{ request()->routeIs('business.projects.*') ? 'active' : '' }}" href="{{ route('business.projects.index', $business) }}">
+                                <i class="bi bi-kanban"></i>
+                                <span>Projects</span>
+                            </a>
+                        </li>
                         <li class="menu-item">
                             <a class="menu-link {{ request()->routeIs('business.reports.*') ? 'active' : '' }}" href="{{ route('business.reports.index', $business) }}">
                                 <i class="bi bi-bar-chart-line"></i>

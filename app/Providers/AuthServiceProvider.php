@@ -80,6 +80,9 @@ class AuthServiceProvider extends ServiceProvider
         \App\Models\PaymentMade::class => \App\Policies\PaymentMadePolicy::class,
         \App\Models\CreditNote::class => \App\Policies\CreditNotePolicy::class,
         \App\Models\DebitNote::class => \App\Policies\DebitNotePolicy::class,
+        \App\Models\Tax::class => \App\Policies\TaxPolicy::class,
+        \App\Models\RecurringInvoice::class => \App\Policies\RecurringInvoicePolicy::class,
+        \App\Models\Project::class => \App\Policies\ProjectPolicy::class,
     ];
 
     /**

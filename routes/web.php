@@ -137,6 +137,11 @@ Route::middleware(['auth', 'active'])->group(function () {
         Route::resource('payments-made', \App\Http\Controllers\PaymentMadeController::class)->except(['edit', 'update', 'destroy']);
         Route::resource('credit-notes', \App\Http\Controllers\CreditNoteController::class)->except(['edit', 'update', 'destroy']);
         Route::resource('debit-notes', \App\Http\Controllers\DebitNoteController::class)->except(['edit', 'update', 'destroy']);
+
+        // Taxes, Recurring, Projects
+        Route::resource('taxes', \App\Http\Controllers\TaxController::class)->except(['edit', 'update', 'destroy']);
+        Route::resource('recurring-invoices', \App\Http\Controllers\RecurringInvoiceController::class)->except(['edit', 'update', 'destroy']);
+        Route::resource('projects', \App\Http\Controllers\ProjectController::class);
     });
 });
 
